@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FacebookGoogleSignin</string>
+    <string name="facebook_app_id">1682743528700503</string>
+    <string name="fb_login_protocol_scheme">fb1682743528700503</string>
+    <string name="server_client_id">664258998370-3t9pr60kbputg3123dl36ub3oa6cgjvc.apps.googleusercontent.com</string>
+    <string name="loading">loading!!!</string>
+</resources>

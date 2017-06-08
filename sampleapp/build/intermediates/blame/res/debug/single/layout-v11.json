@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/sampleapp/build/intermediates/res/merged/debug/layout-v11/abc_action_bar_decor.xml",
+        "source": "/home/anjaline/.android/build-cache/b725701e2caed24339fbf868fb3a4ba114f4f19e/output/res/layout-v11/abc_action_bar_decor.xml"
+    },
+    {
+        "merged": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/sampleapp/build/intermediates/res/merged/debug/layout-v11/abc_simple_decor.xml",
+        "source": "/home/anjaline/.android/build-cache/b725701e2caed24339fbf868fb3a4ba114f4f19e/output/res/layout-v11/abc_simple_decor.xml"
+    }
+]

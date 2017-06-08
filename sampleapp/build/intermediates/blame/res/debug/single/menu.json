@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/sampleapp/build/intermediates/res/merged/debug/menu/main.xml",
+        "source": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/sampleapp/src/main/res/menu/main.xml"
+    },
+    {
+        "merged": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/sampleapp/build/intermediates/res/merged/debug/menu/deeplink.xml",
+        "source": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/sampleapp/src/main/res/menu/deeplink.xml"
+    },
+    {
+        "merged": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/sampleapp/build/intermediates/res/merged/debug/menu/api.xml",
+        "source": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/sampleapp/src/main/res/menu/api.xml"
+    }
+]
