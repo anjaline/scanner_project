@@ -11,9 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +64,9 @@ import static android.R.attr.key;
 
 public class MainActivitysigninall extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
+
+    ListView listViewforScanning;
+
     //facebook
     private LoginButton facebooklogin;
     private CallbackManager callbackManager;
@@ -81,6 +86,8 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activitysigninall);
+
+
         //facebook
         callbackManager = CallbackManager.Factory.create();
         //  AppEventsLogger.activateApp(this);
@@ -196,18 +203,12 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
         });
     }
 
-    //All methods//
-    //linkedin//
-
     public void inLinkedinlogin() {
 
         try {
             LISessionManager.getInstance(MainActivitysigninall.this).init(MainActivitysigninall.this, buildScope(), new AuthListener() {
                 @Override
                 public void onAuthSuccess() {
-                    LISessionManager sessionManager = LISessionManager.getInstance(MainActivitysigninall.this);
-                    LISession session = sessionManager.getSession();
-                  //  Toast.makeText(getApplicationContext(), "success" + LISessionManager.getInstance(getApplicationContext()).getSession().getAccessToken().toString(), Toast.LENGTH_LONG).show();
                     viewProfile();
                     startNewActivity(LISessionManager.getInstance(getApplicationContext()).getSession().getAccessToken().toString());
                 }

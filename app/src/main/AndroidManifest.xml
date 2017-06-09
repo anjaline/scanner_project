@@ -26,7 +26,8 @@
 
         </activity>
         <activity android:name=".Activity_Scanner">
-
+        </activity>
+        <activity android:name=".DisplaySelectedItem">
         </activity>
     </application>
 

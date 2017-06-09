@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ public class Activity_Scanner extends AppCompatActivity implements GoogleApiClie
     Button btn_scan;
     ImageView image;
     String textQR;
+    ListView listViewforScanning;
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -43,6 +46,21 @@ public class Activity_Scanner extends AppCompatActivity implements GoogleApiClie
         setContentView(R.layout.activity_main_scan);
         scan = (TextView) findViewById(R.id.text);
         btn_scan = (Button) findViewById(R.id.btnscan);
+
+        listViewforScanning=(ListView)findViewById(R.id.Scannerclasss_listing);
+        String[] values = new String[] { "Android List View",
+                "Adapter implementation",
+                "Simple List View In Android",
+                "Create List View Android",
+                "Android Example",
+                "List View Source Code",
+                "List View Array Adapter",
+                "Android Example List View"
+        };
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.activity_main_scan, R.id.text_list_view, values);
+        listViewforScanning.setAdapter(arrayAdapter);
+
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         TextView textView = (TextView) findViewById(R.id.profile_data);
