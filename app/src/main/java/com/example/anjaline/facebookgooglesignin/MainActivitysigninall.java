@@ -29,6 +29,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.TokenData;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -36,6 +37,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.linkedin.platform.APIHelper;
@@ -138,20 +140,41 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
 
         linkdinHashKey = generateHashkey();
         Log.d("hashKey", linkdinHashKey);
-        //LISessionManager.getInstance(getApplicationContext()).clearSession();
-        if (isLoggedIn()) {
+        if (isFacebookLoggedIn()) {
             startNewActivity("User is logged in with fb.");
         }
-
-
-
-
+        if (isLoginwithLinkedin()) {
+            startNewActivity("u are logged in with LinkdIn");
+        }
+        if (isSignedinwithGoogle()) {
+            startNewActivity("u are loggedin with google ");
+        }
     }
 
-    public boolean isLoggedIn() {
+
+    public boolean isFacebookLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         return accessToken != null;
     }
+
+    public boolean isSignedinwithGoogle() {
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            Log.d("TAG", "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isLoginwithLinkedin() {
+        LISessionManager sessionManager = LISessionManager.getInstance(getApplicationContext());
+        LISession session = sessionManager.getSession();
+        boolean accessTokenValid = session.isValid();
+        return accessTokenValid;
+    }
+
 
     private void fbLogin() {
         Log.v("LoginActivity", "FB login called");
@@ -184,8 +207,9 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
                 public void onAuthSuccess() {
                     LISessionManager sessionManager = LISessionManager.getInstance(MainActivitysigninall.this);
                     LISession session = sessionManager.getSession();
-                    Toast.makeText(getApplicationContext(), "success" + LISessionManager.getInstance(getApplicationContext()).getSession().getAccessToken().toString(), Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(getApplicationContext(), "success" + LISessionManager.getInstance(getApplicationContext()).getSession().getAccessToken().toString(), Toast.LENGTH_LONG).show();
                     viewProfile();
+                    startNewActivity(LISessionManager.getInstance(getApplicationContext()).getSession().getAccessToken().toString());
                 }
 
                 @Override
@@ -274,6 +298,7 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN_GOOGLE);
+
     }
 
 
@@ -325,13 +350,13 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
 
     private void updateUI(boolean isSignedIn) {
         if (isSignedIn) {
-            btnGoogleSignIn.setVisibility(View.GONE);
-            facebooklogin.setVisibility(View.GONE);
-            linkedinLogin.setVisibility(View.GONE);
-        } else {
-            btnGoogleSignIn.setVisibility(View.GONE);
+            btnGoogleSignIn.setVisibility(View.VISIBLE);
             facebooklogin.setVisibility(View.VISIBLE);
-            linkedinLogin.setVisibility(View.GONE);
+            linkedinLogin.setVisibility(View.VISIBLE);
+        } else {
+            btnGoogleSignIn.setVisibility(View.VISIBLE);
+            facebooklogin.setVisibility(View.VISIBLE);
+            linkedinLogin.setVisibility(View.VISIBLE);
         }
     }
 
@@ -349,7 +374,7 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
 
             LISessionManager.getInstance(getApplicationContext())
                     .onActivityResult(this, requestCode, resultCode, data);
-            startNewActivity(data.getData().toString());
+            // startNewActivity(data.getData().toString());
 
             // Intent intent = new Intent(MainActivityli.this,home .class);
             // startActivity(intent);

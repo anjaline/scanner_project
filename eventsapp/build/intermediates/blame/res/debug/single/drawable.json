@@ -52,12 +52,12 @@
         "source": "/home/anjaline/.android/build-cache/b725701e2caed24339fbf868fb3a4ba114f4f19e/output/res/drawable/abc_ic_clear_holo_light.xml"
     },
     {
-        "merged": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/eventsapp/build/intermediates/res/merged/debug/drawable/abc_item_background_holo_light.xml",
-        "source": "/home/anjaline/.android/build-cache/b725701e2caed24339fbf868fb3a4ba114f4f19e/output/res/drawable/abc_item_background_holo_light.xml"
-    },
-    {
         "merged": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/eventsapp/build/intermediates/res/merged/debug/drawable/arrow_left.png",
         "source": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/eventsapp/src/main/res/drawable/arrow_left.png"
+    },
+    {
+        "merged": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/eventsapp/build/intermediates/res/merged/debug/drawable/abc_item_background_holo_light.xml",
+        "source": "/home/anjaline/.android/build-cache/b725701e2caed24339fbf868fb3a4ba114f4f19e/output/res/drawable/abc_item_background_holo_light.xml"
     },
     {
         "merged": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/eventsapp/build/intermediates/res/merged/debug/drawable/abc_ic_clear.xml",

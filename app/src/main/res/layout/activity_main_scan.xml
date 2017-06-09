@@ -1,82 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.anjaline.facebookgooglesignin.Activity_Scanner">
 
-    <TextView
-        android:id="@+id/profile_data"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:hint="requested data"
-        android:textSize="20dp" />
+        android:layout_height="500dp">
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_data"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="Scanned Document"
-        android:textSize="20dp" />
+        <TextView
+            android:id="@+id/profile_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:hint="requested data"
+            android:textSize="20dp" />
 
-    <Button
-        android:id="@+id/btnscan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_data"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="Scanned Document"
+            android:textSize="30dp" />
 
-        android:text="scan" />
+        <Button
+            android:id="@+id/btnscan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
 
-    <TextView
-        android:id="@+id/activity_main_txt_scan_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/btnscan"
-        android:layout_marginTop="14dp"
-        android:gravity="center"
-        android:hint="pid=!!!" />
+            android:text="scan" />
+
+        <TextView
+            android:id="@+id/activity_main_txt_scan_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/btnscan"
+            android:layout_marginTop="14dp"
+            android:gravity="center"
+            android:hint="pid=!!!" />
 
 
-    <Button
-        android:id="@+id/btnLogoutFb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <Button
+            android:id="@+id/btnLogoutFb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        android:text="Logout Facebook"
-        android:layout_marginTop="77dp"
-        android:layout_below="@+id/activity_main_txt_scan_data"
-        android:layout_centerHorizontal="true" />
-    <Button
+            android:layout_below="@+id/activity_main_txt_scan_data"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="19dp"
+            android:text="Logout Facebook" />
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_scannr_google_logout"
-        android:text="logout google"
-        android:gravity="center"
-        android:layout_marginTop="19dp"
-        android:layout_below="@+id/btnLogoutFb"
-        android:layout_alignLeft="@+id/btnLogoutFb"
-        android:layout_alignStart="@+id/btnLogoutFb" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="logout linkedin"
-        android:layout_marginTop="20dp"
-       android:layout_centerHorizontal="true"
-        android:layout_below="@+id/button_scannr_google_logout"
-        android:layout_alignRight="@+id/button_scannr_google_logout"
-        android:layout_alignEnd="@+id/button_scannr_google_logout" />
+        <Button
 
-</RelativeLayout>
+            android:id="@+id/button_scannr_google_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnLogoutFb"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+
+            android:text="logout google" />
+
+        <Button
+            android:id="@+id/btn_scanner_linkedin_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="logout linkedin"
+            android:layout_below="@+id/button_scannr_google_logout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp" />
+
+    </RelativeLayout>
+</ScrollView>

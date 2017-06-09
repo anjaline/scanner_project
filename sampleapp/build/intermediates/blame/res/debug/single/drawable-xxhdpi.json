@@ -256,12 +256,12 @@
         "source": "/home/anjaline/.android/build-cache/b725701e2caed24339fbf868fb3a4ba114f4f19e/output/res/drawable-xxhdpi/abc_ic_go.png"
     },
     {
-        "merged": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/sampleapp/build/intermediates/res/merged/debug/drawable-xxhdpi/abc_ic_voice_search.png",
-        "source": "/home/anjaline/.android/build-cache/b725701e2caed24339fbf868fb3a4ba114f4f19e/output/res/drawable-xxhdpi/abc_ic_voice_search.png"
-    },
-    {
         "merged": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/sampleapp/build/intermediates/res/merged/debug/drawable-xxhdpi/abc_list_longpressed_holo.9.png",
         "source": "/home/anjaline/.android/build-cache/b725701e2caed24339fbf868fb3a4ba114f4f19e/output/res/drawable-xxhdpi/abc_list_longpressed_holo.9.png"
+    },
+    {
+        "merged": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/sampleapp/build/intermediates/res/merged/debug/drawable-xxhdpi/abc_ic_voice_search.png",
+        "source": "/home/anjaline/.android/build-cache/b725701e2caed24339fbf868fb3a4ba114f4f19e/output/res/drawable-xxhdpi/abc_ic_voice_search.png"
     },
     {
         "merged": "/home/anjaline/AndroidStudioProjects/FacebookGoogleSignin/sampleapp/build/intermediates/res/merged/debug/drawable-xxhdpi/abc_list_divider_holo_dark.9.png",

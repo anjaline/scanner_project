@@ -2,27 +2,40 @@ package com.example.anjaline.facebookgooglesignin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.linkedin.platform.APIHelper;
+import com.linkedin.platform.LISession;
+import com.linkedin.platform.LISessionManager;
 
 /**
  * Created by anjaline on 7/6/17.
  */
 
-public class Activity_Scanner extends AppCompatActivity {
+public class Activity_Scanner extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     TextView scan, textdata;
     EditText typeinfo;
     Button btn_scan;
     ImageView image;
     String textQR;
+
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +64,47 @@ public class Activity_Scanner extends AppCompatActivity {
 
             }
         });
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
         findViewById(R.id.btnLogoutFb).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LoginManager.getInstance().logOut();
+                finish();
+            }
+        });
+
+        findViewById(R.id.button_scannr_google_logout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                Toast.makeText(Activity_Scanner.this, "loggedout successfully", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        });
+
+
+            }
+        });
+        findViewById(R.id.btn_scanner_linkedin_logout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LISessionManager.getInstance(getApplicationContext()).clearSession();
+                LISessionManager sessionManager = LISessionManager.getInstance(getApplicationContext());
+                LISession session = sessionManager.getSession();
+                APIHelper apiHelper = APIHelper.getInstance(getApplicationContext());
+                apiHelper.cancelCalls(Activity_Scanner.this);
+                Toast.makeText(Activity_Scanner.this, "loggedout successfully", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -80,7 +129,7 @@ public class Activity_Scanner extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             String scanContent = result.getContents();
-            if(scanContent !=null){
+            if (scanContent != null) {
                 textdata.setText("ScanContent " + scanContent);
             }
         } else {
@@ -89,4 +138,8 @@ public class Activity_Scanner extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }
