@@ -62,24 +62,24 @@ import java.util.Arrays;
 import static android.R.attr.borderlessButtonStyle;
 import static android.R.attr.key;
 
-public class MainActivitysigninall extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class MainActivitySignInAll extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
 
-    ListView listViewforScanning;
+    ListView listView_Scanning;
 
     //facebook
-    private LoginButton facebooklogin;
+    private LoginButton facebookloginbutton;
     private CallbackManager callbackManager;
     //google
-    private static final String TAG = MainActivitysigninall.class.getSimpleName();
+    private static final String TAG = MainActivitySignInAll.class.getSimpleName();
     private static final int RC_SIGN_IN_GOOGLE = 007;
     private static final int RC_SIGN_IN_Linkedin = 006;
     private GoogleApiClient mGoogleApiClient;
     private SignInButton btnGoogleSignIn;
 
     //linkedin
-    private Button linkedinLogin;
-    private String linkdinHashKey;
+    private Button linkedIn_Loginbutton;
+    private String linkedIn_Hashkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,19 +90,16 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
 
         //facebook
         callbackManager = CallbackManager.Factory.create();
-        //  AppEventsLogger.activateApp(this);
-        facebooklogin = (LoginButton) findViewById(R.id.facebook_login_button);
+        facebookloginbutton = (LoginButton) findViewById(R.id.facebook_login_button);
         //linkedin
-        linkedinLogin = (Button) findViewById(R.id.login_li_button);
+        linkedIn_Loginbutton = (Button) findViewById(R.id.login_li_button);
         //GOOGLE//
 
         btnGoogleSignIn = (SignInButton) findViewById(R.id.googlebtn_sign_in);
 
-        //facebook
-        //LoginManager.getInstance().logOut();
-        facebooklogin.setReadPermissions(Arrays.asList(
+        facebookloginbutton.setReadPermissions(Arrays.asList(
                 "public_profile", "email", "user_birthday", "user_friends"));
-        facebooklogin.setOnClickListener(new View.OnClickListener() {
+        facebookloginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fbLogin();
@@ -131,8 +128,7 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
             }
         });
 
-        // linkedinLogout.setVisibility(View.GONE);
-        linkedinLogin.setOnClickListener(new View.OnClickListener() {
+        linkedIn_Loginbutton.setOnClickListener(new View.OnClickListener() {
                                              @Override
                                              public void onClick(View v) {
                                                  if (v.getId() == R.id.login_li_button) {
@@ -145,15 +141,15 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
                                          }
         );
 
-        linkdinHashKey = generateHashkey();
-        Log.d("hashKey", linkdinHashKey);
+        linkedIn_Hashkey = generate_Hashkey();
+        Log.d("hashKey", linkedIn_Hashkey);
         if (isFacebookLoggedIn()) {
             startNewActivity("User is logged in with fb.");
         }
-        if (isLoginwithLinkedin()) {
+        if (isLogin_LinkdIn()) {
             startNewActivity("u are logged in with LinkdIn");
         }
-        if (isSignedinwithGoogle()) {
+        if (isSignIn_Google()) {
             startNewActivity("u are loggedin with google ");
         }
     }
@@ -164,7 +160,7 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
         return accessToken != null;
     }
 
-    public boolean isSignedinwithGoogle() {
+    public boolean isSignIn_Google() {
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
             Log.d("TAG", "Got cached sign-in");
@@ -175,7 +171,7 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
         return false;
     }
 
-    private boolean isLoginwithLinkedin() {
+    private boolean isLogin_LinkdIn() {
         LISessionManager sessionManager = LISessionManager.getInstance(getApplicationContext());
         LISession session = sessionManager.getSession();
         boolean accessTokenValid = session.isValid();
@@ -185,7 +181,7 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
 
     private void fbLogin() {
         Log.v("LoginActivity", "FB login called");
-        facebooklogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        facebookloginbutton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.v("LoginActivity", loginResult.getAccessToken().getUserId());
@@ -205,8 +201,8 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
 
     public void inLinkedinlogin() {
 
-        try {
-            LISessionManager.getInstance(MainActivitysigninall.this).init(MainActivitysigninall.this, buildScope(), new AuthListener() {
+
+            LISessionManager.getInstance(MainActivitySignInAll.this).init(MainActivitySignInAll.this, buildScope(), new AuthListener() {
                 @Override
                 public void onAuthSuccess() {
                     viewProfile();
@@ -218,9 +214,7 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
                     Toast.makeText(getApplicationContext(), "failed " + error.toString(), Toast.LENGTH_LONG).show();
                 }
             }, true);
-        } catch (Exception ex) {
-            ex.getMessage();
-        }
+
     }
 
     private Scope buildScope() {
@@ -234,7 +228,7 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
         String Url = "https://" + host + "/v1/people/~:(first-name,last-name,public-profile-url)";
 
         APIHelper apiHelper = APIHelper.getInstance(getApplicationContext());
-        apiHelper.getRequest(MainActivitysigninall.this, Url, new ApiListener() {
+        apiHelper.getRequest(MainActivitySignInAll.this, Url, new ApiListener() {
             @Override
             public void onApiSuccess(ApiResponse apiresponse) {
                 //Print the response s you will get profile parameters.
@@ -268,7 +262,7 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
     }
 
 
-    public String generateHashkey() {
+    public String generate_Hashkey() {
         String hashKey = "";
         try {
             PackageInfo info = getPackageManager().getPackageInfo("com.example.anjaline.facebookgooglesignin", PackageManager.GET_SIGNATURES);
@@ -352,12 +346,12 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
     private void updateUI(boolean isSignedIn) {
         if (isSignedIn) {
             btnGoogleSignIn.setVisibility(View.VISIBLE);
-            facebooklogin.setVisibility(View.VISIBLE);
-            linkedinLogin.setVisibility(View.VISIBLE);
+            facebookloginbutton.setVisibility(View.VISIBLE);
+            linkedIn_Loginbutton.setVisibility(View.VISIBLE);
         } else {
             btnGoogleSignIn.setVisibility(View.VISIBLE);
-            facebooklogin.setVisibility(View.VISIBLE);
-            linkedinLogin.setVisibility(View.VISIBLE);
+            facebookloginbutton.setVisibility(View.VISIBLE);
+            linkedIn_Loginbutton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -375,25 +369,11 @@ public class MainActivitysigninall extends AppCompatActivity implements GoogleAp
 
             LISessionManager.getInstance(getApplicationContext())
                     .onActivityResult(this, requestCode, resultCode, data);
-            // startNewActivity(data.getData().toString());
-
-            // Intent intent = new Intent(MainActivityli.this,home .class);
-            // startActivity(intent);
         }
-
-        // @Override
-        //public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-        // }
-
-        //@Override
-        //public void onClick(View v) {
-
-        //}
     }
 
     public void startNewActivity(String data) {
-        Intent intent = new Intent(MainActivitysigninall.this, Activity_Scanner.class);
+        Intent intent = new Intent(MainActivitySignInAll.this, Activity_Scanner.class);
         intent.putExtra("intent_key", data);
         startActivity(intent);
 

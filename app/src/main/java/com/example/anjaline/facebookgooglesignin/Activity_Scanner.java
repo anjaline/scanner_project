@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,10 +34,20 @@ import com.linkedin.platform.LISessionManager;
 public class Activity_Scanner extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     TextView scan, textdata;
     EditText typeinfo;
-    Button btn_scan;
+    Button btn_scan,btn_test;
     ImageView image;
     String textQR;
+    String data;
     ListView listViewforScanning;
+    String[] values = new String[]{"Android List View",
+            "Adapter implementation",
+            "Simple List View In Android",
+            "Create List View Android",
+            "Android Example",
+            "List View Source Code",
+            "List View Array Adapter",
+            "Android Example List View"
+    };
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -46,20 +57,31 @@ public class Activity_Scanner extends AppCompatActivity implements GoogleApiClie
         setContentView(R.layout.activity_main_scan);
         scan = (TextView) findViewById(R.id.text);
         btn_scan = (Button) findViewById(R.id.btnscan);
+       btn_test=(Button)findViewById(R.id.btn_test);
+        btn_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        listViewforScanning=(ListView)findViewById(R.id.Scannerclasss_listing);
-        String[] values = new String[] { "Android List View",
-                "Adapter implementation",
-                "Simple List View In Android",
-                "Create List View Android",
-                "Android Example",
-                "List View Source Code",
-                "List View Array Adapter",
-                "Android Example List View"
-        };
+                Intent mac=new Intent(Activity_Scanner.this,Database_Intermediate.class);
+                mac.putExtra("details",data);
+                startActivity(mac);
+            }
+        });
+        listViewforScanning = (ListView) findViewById(R.id.listView_one);
+        final String countryList[] = new String[]{"India", "China", "australia", "Portugle", "America", "NewZealand"};
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.activity_main_scan, R.id.text_list_view, values);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.viewlistitem_scannerfile, R.id.item_scannerlist, countryList);
         listViewforScanning.setAdapter(arrayAdapter);
+        listViewforScanning.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String str = countryList[position];
+                Intent intent=new Intent(Activity_Scanner.this,DisplaySelectedItem.class);
+                intent.putExtra("item_key",str);
+                startActivity(intent);
+            }
+        });
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();

@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
-        <activity android:name=".MainActivitysigninall">
+        <activity android:name=".MainActivitySignInAll">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,9 +25,14 @@
             android:label="@string/app_name" />
 
         </activity>
-        <activity android:name=".Activity_Scanner">
+        <activity android:name=".Activity_Scanner"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation">
         </activity>
         <activity android:name=".DisplaySelectedItem">
+        </activity>
+        <activity android:name=".Database_Intermediate">
+
         </activity>
     </application>
 

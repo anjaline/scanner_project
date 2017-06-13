@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,90 +7,91 @@
     tools:context="com.example.anjaline.facebookgooglesignin.Activity_Scanner">
 
 
-        <AutoCompleteTextView
-            android:id="@+id/profile_data"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="20dp"
-            android:gravity=""
-            android:text="Profile Details:"
-            android:textSize="20dp" />
+    <AutoCompleteTextView
+        android:id="@+id/profile_data"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:gravity=""
+        android:text="Profile Details:"
+        android:textSize="20dp" />
 
 
+    <Button
+        android:id="@+id/btnscan"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profile_data"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="scan" />
+    <Button
+        android:id="@+id/btn_test"
+        android:text="test"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/activity_main_txt_scan_data"
+        android:layout_alignRight="@+id/btn_scanner_linkedin_logout"
+        android:layout_alignEnd="@+id/btn_scanner_linkedin_logout"
+        android:layout_marginRight="26dp"
+        android:layout_marginEnd="26dp" />
 
-        <Button
-            android:id="@+id/btnscan"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="center"
+    <TextView
+        android:id="@+id/activity_main_txt_scan_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btnscan"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="pid=!!!"
+        android:textSize="20dp" />
 
-            android:text="scan"
-            android:layout_below="@+id/profile_data"
-            android:layout_centerHorizontal="true" />
+    <ListView
+        android:id="@+id/listView_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="1dp"
+        android:divider="@color/cardview_dark_background"
+        android:layout_above="@+id/btnLogoutFb"
+        android:layout_below="@+id/activity_main_txt_scan_data" />
 
-        <TextView
-            android:id="@+id/activity_main_txt_scan_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/btnscan"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="pid=!!!"
-            android:textSize="20dp"/>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_main_txt_scan_data">
-        <ListView
-            android:id="@+id/Scannerclasss_listing"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:dividerHeight="@color/cardview_dark_background"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            >
+    <Button
+        android:id="@+id/btnLogoutFb"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:text="Logout Facebook"
+        android:textSize="10dp" />
 
-        </ListView>
-        </RelativeLayout>
+    <Button
 
-        <Button
-            android:id="@+id/btnLogoutFb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-              android:textSize="10dp"
-            android:text="Logout Facebook"
-            android:layout_marginStart="4dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-         />
+        android:id="@+id/button_scannr_google_logout"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="logout google"
+        android:textSize="10dp"
+        android:layout_alignParentBottom="true"
 
-        <Button
+        android:layout_marginLeft="110dp"
+        />
 
-            android:id="@+id/button_scannr_google_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="10dp"
-            android:layout_alignRight="@+id/btnLogoutFb"
-            android:text="logout google"
-            android:layout_marginLeft="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/btnscan" />
-
-        <Button
-            android:id="@+id/btn_scanner_linkedin_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="logout linkedin"
-            android:layout_alignParentBottom="true"
-            android:textSize="10dp"
-             android:layout_marginEnd="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_alignParentRight="true" />
+    <Button
+        android:id="@+id/btn_scanner_linkedin_logout"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:text="logout linkedin"
+        android:textSize="10dp" />
 
 </RelativeLayout>
