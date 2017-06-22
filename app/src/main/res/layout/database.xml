@@ -29,12 +29,12 @@
         android:layout_marginLeft="30dp"
         android:text="data"
         android:textSize="20dp"
-        android:layout_marginTop="26dp"/>
+        android:layout_marginTop="30dp"/>
     <EditText
         android:id="@+id/edittext_data"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="20dp"
         android:layout_alignBaseline="@+id/textView_data"
         android:layout_alignBottom="@+id/textView_data"
         android:layout_alignLeft="@+id/edittext_id"
@@ -45,7 +45,7 @@
     android:layout_height="wrap_content"
     android:text="Username:"
     android:textSize="20dp"
-    android:layout_marginTop="34dp"
+    android:layout_marginTop="32dp"
     android:layout_below="@+id/edittext_data"
     android:layout_alignLeft="@+id/textView_data"
     android:layout_alignStart="@+id/textView_data"
@@ -108,13 +108,23 @@
         android:layout_marginTop="18dp" />
 
     <Button
-        android:id="@+id/view_all"
-        android:text="showall"
-        android:layout_width="match_parent"
+        android:id="@+id/view_all_table_1"
+        android:text="showall for table one"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/view_all_table_2"
+        android:text="showall for table two"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
 
 
 

@@ -2,10 +2,12 @@ package com.example.anjaline.facebookgooglesignin;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -28,6 +30,7 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -64,20 +67,15 @@ import static android.R.attr.key;
 
 public class MainActivitySignInAll extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
-
     ListView listView_Scanning;
-
-    //facebook
+    SharedPreferences sharedpreferences;
     private LoginButton facebookloginbutton;
     private CallbackManager callbackManager;
-    //google
     private static final String TAG = MainActivitySignInAll.class.getSimpleName();
     private static final int RC_SIGN_IN_GOOGLE = 007;
     private static final int RC_SIGN_IN_Linkedin = 006;
     private GoogleApiClient mGoogleApiClient;
     private SignInButton btnGoogleSignIn;
-
-    //linkedin
     private Button linkedIn_Loginbutton;
     private String linkedIn_Hashkey;
 
@@ -87,16 +85,10 @@ public class MainActivitySignInAll extends AppCompatActivity implements GoogleAp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activitysigninall);
 
-
-        //facebook
         callbackManager = CallbackManager.Factory.create();
         facebookloginbutton = (LoginButton) findViewById(R.id.facebook_login_button);
-        //linkedin
         linkedIn_Loginbutton = (Button) findViewById(R.id.login_li_button);
-        //GOOGLE//
-
         btnGoogleSignIn = (SignInButton) findViewById(R.id.googlebtn_sign_in);
-
         facebookloginbutton.setReadPermissions(Arrays.asList(
                 "public_profile", "email", "user_birthday", "user_friends"));
         facebookloginbutton.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +101,6 @@ public class MainActivitySignInAll extends AppCompatActivity implements GoogleAp
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -129,31 +120,43 @@ public class MainActivitySignInAll extends AppCompatActivity implements GoogleAp
         });
 
         linkedIn_Loginbutton.setOnClickListener(new View.OnClickListener() {
-                                             @Override
-                                             public void onClick(View v) {
-                                                 if (v.getId() == R.id.login_li_button) {
-                                                     inLinkedinlogin();
-                                                 } else {
-                                                     onLinkedinLogout();
-                                                 }
-
-                                             }
-                                         }
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        if (v.getId() == R.id.login_li_button) {
+                                                            inLinkedinlogin();
+                                                        } else {
+                                                            onLinkedinLogout();
+                                                        }
+                                                    }
+                                                }
         );
 
         linkedIn_Hashkey = generate_Hashkey();
         Log.d("hashKey", linkedIn_Hashkey);
         if (isFacebookLoggedIn()) {
-            startNewActivity("User is logged in with fb.");
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            final String id = preferences.getString("id", null);
+            final String username = preferences.getString("Name", null);
+            final String email = preferences.getString("Email", null);
+            startNewActivity("\nId:"+id,"\nName:"+username,"\nEmail:"+email);
         }
+
         if (isLogin_LinkdIn()) {
-            startNewActivity("u are logged in with LinkdIn");
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            final String id = preferences.getString("id", null);
+            final String username = preferences.getString("Name", null);
+            final String email = preferences.getString("Email", null);
+
+            startNewActivity("\nId:"+id,"\nName:"+username,"\nEmail:"+email);
         }
         if (isSignIn_Google()) {
-            startNewActivity("u are loggedin with google ");
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            final String id = preferences.getString("id", null);
+            final String username = preferences.getString("Name", null);
+            final String email = preferences.getString("Email", null);
+            startNewActivity("\nId:"+id,"\nName:"+username,"\nEmail:"+email);
         }
     }
-
 
     public boolean isFacebookLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -178,14 +181,24 @@ public class MainActivitySignInAll extends AppCompatActivity implements GoogleAp
         return accessTokenValid;
     }
 
-
     private void fbLogin() {
         Log.v("LoginActivity", "FB login called");
         facebookloginbutton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.v("LoginActivity", loginResult.getAccessToken().getUserId());
-                startNewActivity(loginResult.getAccessToken().getUserId());
+                Profile profile = Profile.getCurrentProfile();
+                String f_name = null;
+                String facebook_id = null;
+                String m_name = null;
+                if (profile != null) {
+                    facebook_id = profile.getId();
+                    f_name = profile.getFirstName();
+                    m_name = profile.getMiddleName();
+                }
+                save(facebook_id, f_name, m_name);
+
+                startNewActivity(facebook_id, f_name, m_name);
                 updateUI(true);
             }
 
@@ -200,20 +213,18 @@ public class MainActivitySignInAll extends AppCompatActivity implements GoogleAp
     }
 
     public void inLinkedinlogin() {
+        LISessionManager.getInstance(MainActivitySignInAll.this).init(MainActivitySignInAll.this, buildScope(), new AuthListener() {
+            @Override
+            public void onAuthSuccess() {
+                viewProfile();
+                // startNewActivity(LISessionManager.getInstance(getApplicationContext()).getSession().getAccessToken().toString());
+            }
 
-
-            LISessionManager.getInstance(MainActivitySignInAll.this).init(MainActivitySignInAll.this, buildScope(), new AuthListener() {
-                @Override
-                public void onAuthSuccess() {
-                    viewProfile();
-                    startNewActivity(LISessionManager.getInstance(getApplicationContext()).getSession().getAccessToken().toString());
-                }
-
-                @Override
-                public void onAuthError(LIAuthError error) {
-                    Toast.makeText(getApplicationContext(), "failed " + error.toString(), Toast.LENGTH_LONG).show();
-                }
-            }, true);
+            @Override
+            public void onAuthError(LIAuthError error) {
+                Toast.makeText(getApplicationContext(), "failed " + error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }, true);
 
     }
 
@@ -221,30 +232,28 @@ public class MainActivitySignInAll extends AppCompatActivity implements GoogleAp
         return Scope.build(Scope.R_BASICPROFILE, Scope.W_SHARE, Scope.R_EMAILADDRESS);
     }
 
-
     protected void viewProfile() {
-
         String host = "api.linkedin.com";
         String Url = "https://" + host + "/v1/people/~:(first-name,last-name,public-profile-url)";
-
         APIHelper apiHelper = APIHelper.getInstance(getApplicationContext());
         apiHelper.getRequest(MainActivitySignInAll.this, Url, new ApiListener() {
             @Override
             public void onApiSuccess(ApiResponse apiresponse) {
-                //Print the response s you will get profile parameters.
                 try {
                     JSONObject jasonobject = apiresponse.getResponseDataAsJson();
-                    // String id = jasonobject.getString("id");
+                    String id = jasonobject.getString("id");
                     String firstname = jasonobject.getString("firstname");
-                    String lastname = jasonobject.getString("lastname");
                     String email = jasonobject.getString("email");
-                    // Picasso.with(getApplicationContext()).load(pictureurl)
                     StringBuilder sb = new StringBuilder();
-                    sb.append("Firstname:" + firstname);
+                    sb.append("Firstname:" + id);
                     sb.append("/n/n");
-                    sb.append("Lastname:" + lastname);
+                    sb.append("Lastname:" + firstname);
                     sb.append("/n/n");
                     sb.append("Email:" + email);
+                    save(id, firstname, email);
+
+                    startNewActivity(id, firstname, email);
+                    save(id, firstname, email);
                     updateUI(true);
 
                 } catch (JSONException e) {
@@ -256,11 +265,9 @@ public class MainActivitySignInAll extends AppCompatActivity implements GoogleAp
 
             @Override
             public void onApiError(LIApiError error) {
-                //error message
             }
         });
     }
-
 
     public String generate_Hashkey() {
         String hashKey = "";
@@ -283,30 +290,14 @@ public class MainActivitySignInAll extends AppCompatActivity implements GoogleAp
 
 
     public void onLinkedinLogout() {
-
         LISessionManager.getInstance(getApplicationContext()).clearSession();
         LISessionManager sessionManager = LISessionManager.getInstance(getApplicationContext());
         LISession session = sessionManager.getSession();
     }
 
-    //google//
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN_GOOGLE);
-
-    }
-
-
-    private void signOut() {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        updateUI(false);
-                    }
-
-
-                });
     }
 
 
@@ -327,15 +318,15 @@ public class MainActivitySignInAll extends AppCompatActivity implements GoogleAp
             GoogleSignInAccount acct = result.getSignInAccount();
 
             Log.e(TAG, "display name: " + acct.getDisplayName());
-
+            String id = acct.getId();
             String personName = acct.getDisplayName();
             String personPhotoUrl = "";
             String email = acct.getEmail();
-
             Log.e(TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " + personPhotoUrl);
-            startNewActivity("Name: " + personName + ", email: " + email
-                    + ", Image: " + personPhotoUrl);
+            save(id, personName, email);
+            startNewActivity(id, personName, email);
+
             updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.
@@ -355,7 +346,6 @@ public class MainActivitySignInAll extends AppCompatActivity implements GoogleAp
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -372,10 +362,21 @@ public class MainActivitySignInAll extends AppCompatActivity implements GoogleAp
         }
     }
 
-    public void startNewActivity(String data) {
+    public void startNewActivity(String data, String name, String email) {
         Intent intent = new Intent(MainActivitySignInAll.this, Activity_Scanner.class);
-        intent.putExtra("intent_key", data);
+        intent.putExtra("user_id", data);
+        intent.putExtra("user_name", name);
+        intent.putExtra("user_email", email);
         startActivity(intent);
+    }
+
+    public void save(String id_data, String name, String email) {
+        sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("id", id_data);
+        editor.putString("Name", name);
+        editor.putString("Email", email);
+        editor.commit();
 
     }
 
