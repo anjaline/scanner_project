@@ -3,42 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.anjaline.facebookgooglesignin.Activity_Scanner">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
+    tools:context="com.example.anjaline.facebookgooglesignin.Activity_Scanner">
 
     <AutoCompleteTextView
         android:id="@+id/profile_data"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="10dp"
-        android:focusable="false"
+        android:layout_marginTop="5dp"
+        android:focusable="true"
         android:focusableInTouchMode="true"
         android:gravity="top"
         android:text="Profile Details:"
-        android:textSize="15dp" />
-
+        android:textSize="15dp"
+        android:shadowColor="@color/colorAccent"
+        />
 
     <Button
         android:id="@+id/btnscan"
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_data"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="12dp"
+        android:layout_height="40dp"
         android:gravity="center"
-        android:text="scan" />
+        android:ellipsize="marquee"
+        android:text="scan"
+        android:textSize="12dp"
+        android:background="@color/com_facebook_button_background_color_disabled"        android:layout_alignLeft="@+id/button_scannr_google_logout"
+        android:layout_alignStart="@+id/button_scannr_google_logout"
+        android:layout_below="@+id/profile_data" />
 
-    <Button
-        android:id="@+id/btn_test"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/btn_scanner_linkedin_logout"
-        android:layout_alignRight="@+id/btn_scanner_linkedin_logout"
-        android:layout_marginEnd="26dp"
-        android:layout_marginRight="26dp"
-        android:text="test"
-        android:layout_alignBottom="@+id/btnscan" />
 
     <!--TextView
         android:id="@+id/activity_main_txt_scan_data"
@@ -52,65 +45,86 @@
         android:text="pid=!!!"
         android:textSize="20dp" /1-->
 
+    <TextView
+        android:id="@+id/txtvw_usrdetails"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="USER DETAILS"
+
+        android:layout_below="@+id/btnscan"
+        android:layout_marginLeft="20dp"/>
     <ListView
         android:id="@+id/listView_one"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="250dp"
-
-
-        android:divider="@color/cardview_dark_background"
-        android:dividerHeight="1dp"
-
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="24dp"
         android:layout_below="@+id/btnscan"
-        android:layout_alignLeft="@+id/btnscan"
-        android:layout_alignStart="@+id/btnscan" />
-
+        android:layout_alignLeft="@+id/btnLogoutFb"
+        android:layout_alignStart="@+id/btnLogoutFb"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="5dp"
+        android:layout_above="@+id/btnLogoutFb"
+        android:padding="5dp"
+        android:divider="@color/colorPrimaryDark"
+        android:dividerHeight="2dp"
+        android:layout_weight="1"
+        android:background="@color/com_facebook_button_background_color_disabled"
+        />
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:text="SCANNED DETAILS"
+    android:layout_below="@+id/btnscan"
+    android:layout_above="@+id/scan_item"
+    android:layout_alignLeft="@+id/scan_item"
+    android:layout_alignStart="@+id/scan_item" />
     <ListView
         android:id="@+id/scan_item"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="250dp"
-
-        android:divider="@color/cardview_dark_background"
-        android:dividerHeight="1dp"
+        android:divider="@color/colorPrimaryDark"
+        android:dividerHeight="2dp"
+        android:layout_above="@+id/button_scannr_google_logout"
         android:layout_alignTop="@+id/listView_one"
-        android:layout_alignLeft="@+id/btn_test"
-        android:layout_alignStart="@+id/btn_test" />
-
+        android:layout_alignRight="@+id/btn_scanner_linkedin_logout"
+        android:layout_alignEnd="@+id/btn_scanner_linkedin_logout"
+        android:layout_marginRight="12dp"
+        android:layout_marginEnd="12dp"
+        android:padding="5dp"
+        android:background="@color/com_facebook_button_background_color_disabled"/>
 
     <Button
         android:id="@+id/btnLogoutFb"
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
         android:text="Logout Facebook"
-        android:textSize="10dp" />
+        android:textSize="10dp"></Button>
 
     <Button
 
         android:id="@+id/button_scannr_google_logout"
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="110dp"
+        android:layout_height="45dp"
         android:gravity="center"
         android:text="logout google"
-
-        android:textSize="10dp" />
+        android:textSize="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/btn_scanner_linkedin_logout"
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginEnd="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:text="logout linkedin"
-        android:textSize="10dp" />
+        android:textSize="10dp"/>
 
 </RelativeLayout>

@@ -125,9 +125,9 @@ public class HandleDatabase extends SQLiteOpenHelper {
             res.moveToFirst();
             while (!res.isAfterLast()) {
                 UserData userData = new UserData();
-                userData.setUser_id(res.getString(1));
-                userData.setUser_name(res.getString(2));
-                userData.setUser_email(res.getString(3));
+                userData.setUser_id("User id:"+res.getString(1));
+                userData.setUser_name("User name:"+res.getString(2));
+                userData.setUser_email("User email:"+res.getString(3));
                 arrayList.add(userData);
                 res.moveToNext();
             }
@@ -152,9 +152,9 @@ public class HandleDatabase extends SQLiteOpenHelper {
             res1.moveToFirst();
             while (!res1.isAfterLast()) {
                 UserScannedData userScannedData = new UserScannedData();
-                userScannedData.setScan_id(res1.getString(0));
-                userScannedData.setScan_user_id(res1.getString(1));
-                userScannedData.setScan_data(res1.getString(2));
+                userScannedData.setScan_id("User no:"+res1.getString(0));
+                userScannedData.setScan_user_id("User id:"+res1.getString(1));
+                userScannedData.setScan_data("Data:"+res1.getString(2));
                 scanList.add(userScannedData);
                 res1.moveToNext();
             }

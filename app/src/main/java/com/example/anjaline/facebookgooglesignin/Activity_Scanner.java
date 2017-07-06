@@ -1,13 +1,19 @@
 package com.example.anjaline.facebookgooglesignin;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,6 +27,7 @@ import com.example.anjaline.facebookgooglesignin.AdapterClasses.CustomUserAdapte
 import com.example.anjaline.facebookgooglesignin.AdapterClasses.NewCustomAdapterClass;
 import com.example.anjaline.facebookgooglesignin.PojoClasses.UserData;
 import com.example.anjaline.facebookgooglesignin.PojoClasses.UserScannedData;
+import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -63,26 +70,17 @@ public class Activity_Scanner extends AppCompatActivity implements GoogleApiClie
 
         scan = (TextView) findViewById(R.id.text);
         btn_scan = (Button) findViewById(R.id.btnscan);
-        btn_test = (Button) findViewById(R.id.btn_test);
+        //btn_test = (Button) findViewById(R.id.btn_test);
         listViewforScanning = (ListView) findViewById(R.id.listView_one);
        scannList=(ListView)findViewById(R.id.scan_item);
         insertUserDataIntoDB();
-        btn_test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HandleDatabase handleDatabase = new HandleDatabase(Activity_Scanner.this);
-                ArrayList<UserData> arrayList = handleDatabase.getAllUserData();
-                ArrayList<UserScannedData> userScannedDataArrayList = handleDatabase.getScannedData();
+        HandleDatabase handleDatabase = new HandleDatabase(Activity_Scanner.this);
+        ArrayList<UserData> arrayList = handleDatabase.getAllUserData();
+        setUserDataInList(arrayList);
 
-                setUserDataInList(arrayList);
-                setScannedDataInList(userScannedDataArrayList);
-            }
-        });
-           ;
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         TextView textView = (TextView) findViewById(R.id.profile_data);
-
         if (bundle != null) {
             profile1 = bundle.getString("user_id");
             profile2 = bundle.getString("user_name");
@@ -94,24 +92,15 @@ public class Activity_Scanner extends AppCompatActivity implements GoogleApiClie
             public void onClick(View v) {
                 IntentIntegrator integrator = new IntentIntegrator(Activity_Scanner.this);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-
                 integrator.setPrompt("scan");
                 integrator.setCameraId(0);
                 integrator.setBeepEnabled(false);
                 integrator.setBarcodeImageEnabled(false);
                 integrator.initiateScan();
-
-//                HandleDatabase handleDatabase = new HandleDatabase(Activity_Scanner.this);
-//                ArrayList<UserData> arrayList = handleDatabase.getAllUserData();
-//                StringBuilder sb = new StringBuilder();
-//                sb.append("Id : " + arrayList.get(0).getUser_id());
-//                sb.append("\n");
-//                sb.append("Name : " + arrayList.get(0).getUser_name());
-//                sb.append("\n");
-//                sb.append("Email : " + arrayList.get(0).getUser_email());
-//                Toast.makeText(Activity_Scanner.this, sb.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+        ArrayList<UserScannedData> userScannedDataArrayList = handleDatabase.getScannedData();
+        setScannedDataInList(userScannedDataArrayList);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -124,8 +113,15 @@ public class Activity_Scanner extends AppCompatActivity implements GoogleApiClie
         findViewById(R.id.btnLogoutFb).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginManager.getInstance().logOut();
+                AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                if(accessToken != null){
+                    LoginManager.getInstance().logOut();
+                }
+                Intent intent = new Intent(Activity_Scanner.this, MainActivitySignInAll.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Toast.makeText(Activity_Scanner.this, "logout successfully", Toast.LENGTH_SHORT).show();
                 finish();
+                startActivity(intent);
             }
         });
 
@@ -136,25 +132,57 @@ public class Activity_Scanner extends AppCompatActivity implements GoogleApiClie
                         new ResultCallback<Status>() {
                             @Override
                             public void onResult(Status status) {
+                                if (mGoogleApiClient.isConnected())
+                                    Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                                 Toast.makeText(Activity_Scanner.this, "logout successfully", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Activity_Scanner.this, MainActivitySignInAll.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 finish();
+                                startActivity(intent);
                             }
                         });
             }
-        });
+        }
+        );
         findViewById(R.id.btn_scanner_linkedin_logout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LISessionManager.getInstance(getApplicationContext()).clearSession();
                 LISessionManager sessionManager = LISessionManager.getInstance(getApplicationContext());
-                LISession session = sessionManager.getSession();
+                //LISession session = sessionManager.getSession();
                 APIHelper apiHelper = APIHelper.getInstance(getApplicationContext());
                 apiHelper.cancelCalls(Activity_Scanner.this);
                 Toast.makeText(Activity_Scanner.this, "logout successfully", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Activity_Scanner.this, MainActivitySignInAll.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 finish();
+                startActivity(intent);
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Exit Or Not");
+        builder.setMessage("Do you want to exit? ");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+               Activity_Scanner.super.onBackPressed();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+               //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                finish();
+                startActivity(intent);
 
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+             //Activity_Scanner.super.onBackPressed();
+               // finish();
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -178,6 +206,11 @@ public class Activity_Scanner extends AppCompatActivity implements GoogleApiClie
             if (scanContent != null) {
                 Toast.makeText(Activity_Scanner.this,scanContent, Toast.LENGTH_SHORT).show();
                 insertScannedDataIntoDB(scanContent);
+                HandleDatabase handleDatabase = new HandleDatabase(Activity_Scanner.this);
+
+                ArrayList<UserScannedData> userScannedDataArrayList = handleDatabase.getScannedData();
+                setScannedDataInList(userScannedDataArrayList);
+                finish();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -203,7 +236,6 @@ public class Activity_Scanner extends AppCompatActivity implements GoogleApiClie
         handleDatabase.addTable(pref_id, _name, _email);
     }
 
-
     /**
      * This function will be called to show the user details in listview (on click of test btn)
      * to show the user details in list view first fetch the details from db and then pass them to adapter and then use
@@ -216,7 +248,6 @@ public class Activity_Scanner extends AppCompatActivity implements GoogleApiClie
         listViewforScanning.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 HandleDatabase handleDatabase = new HandleDatabase(Activity_Scanner.this);
                 ArrayList<UserData> arrayList = handleDatabase.getAllUserData();
                 StringBuilder sb = new StringBuilder();
@@ -226,6 +257,7 @@ public class Activity_Scanner extends AppCompatActivity implements GoogleApiClie
                 sb.append("\n");
                 sb.append("Email : " + arrayList.get(0).getUser_email());
                 Toast.makeText(Activity_Scanner.this, sb.toString(), Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
@@ -244,7 +276,7 @@ public class Activity_Scanner extends AppCompatActivity implements GoogleApiClie
                 StringBuilder sb1 = new StringBuilder();
                 sb1.append("data: " + scanList.get(1).getScan_data());
                 Toast.makeText(Activity_Scanner.this, sb1.toString(), Toast.LENGTH_SHORT).show();
-                //Toast.makeText(Activity_Scanner.this, sb.toString(), Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
